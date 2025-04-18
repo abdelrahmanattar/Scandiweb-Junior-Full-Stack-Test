@@ -1,0 +1,15 @@
+.cart-icon {
+    display: block;
+    position: relative;
+}
+
+.cart-bubble {
+    background-color: red;
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    border-radius: 50%;
+    color: white;
+    font-size: 14px;
+    padding: 5px;
+}
