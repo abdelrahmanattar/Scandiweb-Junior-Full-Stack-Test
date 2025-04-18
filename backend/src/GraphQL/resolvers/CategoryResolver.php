@@ -6,9 +6,8 @@ use PDO;
 
 class CategoryResolver
 {
-    public static function fetchCategories(): array
+    public static function fetchCategories($pdo): array
     {
-        $pdo = new PDO("mysql:host=localhost;dbname=scandiweb", "root", "1234");
         $stmt = $pdo->query("SELECT * FROM categories");
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
