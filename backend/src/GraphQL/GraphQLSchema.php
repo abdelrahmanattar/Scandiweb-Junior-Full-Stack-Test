@@ -50,9 +50,7 @@ class GraphQLSchema
                 'attribute_type' => Type::string(),
                 'attribute_item' => [
                     'type' => Type::listOf($AttributeItemsType),
-                    'resolve' => function ($attribute) {
-                        return AttributeItemsResolver::fetchAttributes($attribute);
-                    }
+                    'resolve' => fn($attribute) => AttributeItemsResolver::fetchAttributes($pdo, $attribute)
                 ]
             ]
         ]);
@@ -62,7 +60,7 @@ class GraphQLSchema
             'fields' => [
                 'id' => Type::string(),
                 'name' => Type::string(),
-                'inStock' => Type::boolean(),
+                'in_stock' => Type::boolean(),
                 'description' => Type::string(),
                 'category' => Type::string(),
                 'brand' => Type::string(),
@@ -92,22 +90,20 @@ class GraphQLSchema
                 'product' => [
                     'type' => $productType,
                     'args' => [
-                        'id' => ['type' => Type::nonNull(Type::string())],
+                        'id' => ['type' => Type::string()],
                     ],
                     'resolve' => fn($root, $args) => ProductResolver::fetchProductByID($pdo, $args['id']) ?: throw new \Exception("Product not found"),
                 ],
                 'productsByCategory' => [
                     'type' => Type::listOf($productType),
                     'args' => [
-                        'category' => ['type' => Type::nonNull(Type::string())],
+                        'category' => ['type' => Type::string()],
                     ],
                     'resolve' => fn($root, $args) => ProductResolver::fetchProductByCategory($pdo, $args['category']),
                 ],
                 'categories' => [
                     'type' => Type::listOf($categoryType),
-                    'resolve' => function () {
-                        return CategoryResolver::fetchCategories();
-                    }
+                    'resolve' => fn() => CategoryResolver::fetchCategories($pdo)
                 ],
             ]
         ]);
