@@ -1,0 +1,19 @@
+.product-container {
+    background-color: white;
+}
+
+.product-wrapper {
+    margin-left: 50px;
+    margin-right: 30px;
+    margin-bottom: 30px;
+}
+
+.product-wrapper .sr-only {
+    margin: 80px 0px;
+    font-family: Raleway;
+    font-size: 42px;
+    font-weight: 400;
+    line-height: 160%;
+    letter-spacing: 0;
+    vertical-align: middle;
+}
