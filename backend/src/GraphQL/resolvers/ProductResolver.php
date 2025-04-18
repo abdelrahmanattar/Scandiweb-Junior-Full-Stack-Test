@@ -3,7 +3,6 @@
 namespace App\GraphQL\Resolvers;
 
 use PDO;
-use PDOException;
 use App\Models\Product;
 
 class ProductResolver
@@ -14,24 +13,22 @@ class ProductResolver
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public static function fetchProductByID(PDO $pdo, string $id): ?Product
+    public static function fetchProductByID($pdo, $id): ?Product
     {
-        try {
-            // Use the provided PDO instance instead of creating a new one
-            $stmt = $pdo->prepare("SELECT * FROM products WHERE id = :id");
-            $stmt->bindParam(':id', $id, PDO::PARAM_STR);
-            $stmt->execute();
+        $stmt = $pdo->prepare("SELECT * FROM products WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_STR);
+        $stmt->execute();
 
-            $productData = $stmt->fetch();
-            return $productData ? new Product($productData) : null;
-        } catch (PDOException $e) {
-            error_log("Database error: " . $e->getMessage()); // Log the error
-            return null;
-        }
+        $productData = $stmt->fetch();
+        return $productData ? new Product($productData) : null;
     }
 
-    public static function fetchProductByCategory(PDO $pdo, string $category): array
+    public static function fetchProductByCategory($pdo, $category): array
     {
+        if ($category == null) {
+            $stmt = $pdo->query("SELECT * FROM products");
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        }
         $stmt = $pdo->prepare("SELECT * FROM products WHERE category = :category");
         $stmt->bindParam(':category', $category, PDO::PARAM_STR);
         $stmt->execute();

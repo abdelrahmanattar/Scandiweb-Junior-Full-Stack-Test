@@ -12,7 +12,7 @@ class Product
     public string $brand;
     private Price $price;
     public string $description;
-    public bool $inStock;
+    public bool $in_stock;
 
     public function __construct(array $data)
     {
@@ -21,13 +21,12 @@ class Product
         $this->category = $data['category'] ?? 'General';
         $this->brand = $data['brand'] ?? 'No Brand';
 
-        // Ensure price is correctly assigned
         $this->price = isset($data['price']) && is_array($data['price'])
             ? new Price($data['price'])
             : new Price(['id' => 0, 'amount' => 0.0, 'currency_label' => 'USD', 'currency_symbol' => '$']);
 
         $this->description = $data['description'] ?? 'No description available';
-        $this->inStock = isset($data['in_stock']) ? (bool) $data['in_stock'] : false;
+        $this->in_stock = isset($data['in_stock']) ? (bool) $data['in_stock'] : false;
     }
 
     public function toArray(): array
@@ -37,9 +36,9 @@ class Product
             'name' => $this->name,
             'category' => $this->category,
             'brand' => $this->brand,
-            'price' => $this->price->toArray(), // Convert Price object to array
+            'price' => $this->price->toArray(),
             'description' => $this->description,
-            'in_stock' => $this->inStock
+            'in_stock' => $this->in_stock
         ];
     }
 }
