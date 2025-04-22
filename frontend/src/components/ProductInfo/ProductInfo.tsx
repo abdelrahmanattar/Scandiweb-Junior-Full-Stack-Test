@@ -20,7 +20,7 @@ interface Product {
   images: string[];
   description: string;
   in_stock: boolean;
-  attributes: ProductAttribute[] | [];
+  attributes?: ProductAttribute[];
 }
 
 interface ProductInfoProps {

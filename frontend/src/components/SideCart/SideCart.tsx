@@ -4,7 +4,6 @@ import { useAppSelector } from "@/hooks/useAppSelector";
 import CartItem from "../CartItem/CartItem";
 import { selectCartCount } from "@/store/slices/cartSlice";
 
-// Define types for the props
 interface SideCartProps {
   isOpen: boolean;
 }
@@ -16,7 +15,6 @@ const SideCart: React.FC<SideCartProps> = ({ isOpen }) => {
     (sum, item) => sum + item.price * item.quantity,
     0
   );
-
   return (
     <div className={`side-cart ${isOpen ? "open" : ""}`}>
       <h2>

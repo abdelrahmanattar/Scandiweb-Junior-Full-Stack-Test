@@ -11,8 +11,8 @@ interface CartItem {
   name: string;
   price: number;
   quantity: number;
-  attributes: { [key: string]: string };
-  all_attributes: { [key: string]: ProductAttribute}
+  attributes?: { [key: string]: string } ;
+  all_attributes?: { [key: string]: ProductAttribute} 
   image: string
 }
 
@@ -32,8 +32,8 @@ export const cartSlice = createSlice({
       const existingItem = state.items.find(
         item =>
           item.id === action.payload.id &&
-          JSON.stringify(item.all_attributes) === JSON.stringify(action.payload.all_attributes) &&
-          JSON.stringify(item.attributes) === JSON.stringify(action.payload.attributes)
+          JSON.stringify(item.all_attributes || {}) === JSON.stringify(action.payload.all_attributes || {}) &&
+          JSON.stringify(item.attributes || {}) === JSON.stringify(action.payload.attributes || {})
       );
       if (existingItem) {
         existingItem.quantity += action.payload.quantity;
@@ -42,22 +42,22 @@ export const cartSlice = createSlice({
       }
     },
 
-    incrementItem(state, action: PayloadAction<{ id: string; attributes: { [key: string]: string } }>) {
+    incrementItem(state, action: PayloadAction<{ id: string; attributes?: { [key: string]: string } }>) {
       const item = state.items.find(
         item =>
           item.id === action.payload.id &&
-          JSON.stringify(item.attributes) === JSON.stringify(action.payload.attributes)
+          JSON.stringify(item.attributes || {}) === JSON.stringify(action.payload.attributes || {})
       );
       if (item) {
         item.quantity += 1;
       }
     },
 
-    decrementItem(state, action: PayloadAction<{ id: string; attributes: { [key: string]: string } }>) {
+    decrementItem(state, action: PayloadAction<{ id: string; attributes?: { [key: string]: string } }>) {
       const itemIndex = state.items.findIndex(
         item =>
           item.id === action.payload.id &&
-          JSON.stringify(item.attributes) === JSON.stringify(action.payload.attributes)
+          JSON.stringify(item.attributes || {}) === JSON.stringify(action.payload.attributes || {})
       );
       if (itemIndex !== -1) {
         const item = state.items[itemIndex];
