@@ -39,7 +39,7 @@ const CartItem: React.FC<CartItemProps> = ({ item }) => {
         <div className="item-price">${item.price.toFixed(2)}</div>
         {item.all_attributes &&
           Object.entries(item.all_attributes).map(([idx, attribute]) => {
-            const selectedValue = item.attributes[attribute.attribute_name];
+            const selectedValue = item.attributes?.[attribute.attribute_name];
             return (
               <div key={attribute.attribute_name} className="item-attribute">
                 <span className="attribute-label">
