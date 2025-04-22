@@ -32,7 +32,6 @@ export const cartSlice = createSlice({
       const existingItem = state.items.find(
         item =>
           item.id === action.payload.id &&
-          JSON.stringify(item.all_attributes || {}) === JSON.stringify(action.payload.all_attributes || {}) &&
           JSON.stringify(item.attributes || {}) === JSON.stringify(action.payload.attributes || {})
       );
       if (existingItem) {
