@@ -1,24 +1,31 @@
-.image-gallery-wrapper {
+.product-images {
     display: flex;
     flex-direction: row;
     gap: 1rem;
-    align-items: center;
 }
 
-.selected-image {
-    width: 100%;
-    width: 575px;
-    height: 478px;
-}
-
-.image-gallery {
+.thumbnail-column {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    max-height: 640px;
+    overflow-y: auto;
     gap: 0.5rem;
-    flex-wrap: nowrap;
-    justify-content: center;
-    height: 120px;
+}
+
+.thumbnail {
     width: 120px;
+    height: 120px;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+.main-image-container {
+    padding: 0.25rem;
+    display: flex;
+}
+
+.main-image {
+    width: 700px;
+    height: 625px;
+    object-fit: cover;
 }

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "./ImageGallery.css";
+
 interface ImageGalleryProps {
   images: string[];
 }
@@ -8,24 +9,20 @@ const ImageGallery: React.FC<ImageGalleryProps> = ({ images }) => {
   const [selectedImage, setSelectedImage] = useState(images[0]);
 
   return (
-    <div className="image-gallery-wrapper">
-      <div className="image-gallery">
-        {images.map((img, i) => (
+    <div className="product-images">
+      <div className="thumbnail-column">
+        {images.map((img, idx) => (
           <img
-            key={i}
+            key={idx}
             src={img}
-            className={`product-image`}
+            alt={`thumbnail-${idx}`}
+            className={`thumbnail ${selectedImage === img ? "active" : ""}`}
             onClick={() => setSelectedImage(img)}
-            alt="Thumbnail"
           />
         ))}
       </div>
-      <div className="selected-image">
-        <img
-          src={selectedImage}
-          alt="Selected"
-          className="w-full max-w-md rounded-lg shadow"
-        />
+      <div className="main-image-container">
+        <img src={selectedImage} alt="main" className="main-image" />
       </div>
     </div>
   );
