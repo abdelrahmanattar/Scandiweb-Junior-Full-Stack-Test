@@ -55,6 +55,25 @@ CREATE TABLE IF NOT EXISTS prices (
     currency_symbol VARCHAR(5),
     FOREIGN KEY (product_id) REFERENCES products(id)
 );
+
+CREATE TABLE IF NOT EXISTS orders (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    total_price DECIMAL(10,2) NOT NULL,
+    status VARCHAR(50) Default 'Pending',
+    created_at DATETIME Default CURRENT_TIMESTAMP,
+    updated_at DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS order_items (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    order_id INT NOT NULL,
+    product_id VARCHAR(50) NOT NULL,
+    quantity INT NOT NULL,
+    price DECIMAL(10, 2) NOT NULL,
+    selected_attributes JSON,
+    FOREIGN KEY (order_id) REFERENCES orders(id) ON DELETE CASCADE
+);
+
 INSERT IGNORE INTO categories (name) VALUES ('clothes');
 INSERT IGNORE INTO categories (name) VALUES ('all');
 INSERT IGNORE INTO categories (name) VALUES ('tech');
