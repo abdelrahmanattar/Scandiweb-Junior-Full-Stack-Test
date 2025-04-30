@@ -3,6 +3,7 @@
 namespace App\GraphQL;
 
 use GraphQL\Type\Definition\ObjectType;
+use GraphQL\Type\Definition\InputObjectType;
 use GraphQL\Type\Definition\Type;
 use GraphQL\Type\Schema;
 use GraphQL\Type\SchemaConfig;
@@ -12,6 +13,8 @@ use App\GraphQL\Resolvers\PriceResolver;
 use App\GraphQL\Resolvers\ProductImageResolver;
 use App\GraphQL\Resolvers\ProductResolver;
 use App\GraphQL\Resolvers\AttributeItemsResolver;
+use App\GraphQL\Resolvers\OrderItemResolver;
+use App\GraphQL\Resolvers\OrderResolver;
 use PDO;
 class GraphQLSchema
 {
@@ -34,7 +37,7 @@ class GraphQLSchema
             ]
         ]);
 
-        $AttributeItemsType = new ObjectType([
+        $attributeItemsType = new ObjectType([
             'name' => 'Attribute_items',
             'fields' => [
                 'display_value' => Type::string(),
@@ -42,14 +45,14 @@ class GraphQLSchema
             ]
         ]);
 
-        $AttributeType = new ObjectType([
+        $attributeType = new ObjectType([
             'name' => 'Attribute',
             'fields' => [
                 'id' => Type::int(),
                 'attribute_name' => Type::string(),
                 'attribute_type' => Type::string(),
                 'attribute_item' => [
-                    'type' => Type::listOf($AttributeItemsType),
+                    'type' => Type::listOf($attributeItemsType),
                     'resolve' => fn($attribute) => AttributeItemsResolver::fetchAttributes($pdo, $attribute)
                 ]
             ]
@@ -69,7 +72,7 @@ class GraphQLSchema
                     'resolve' => fn($product) => ProductImageResolver::fetchProductImage($pdo, $product)
                 ],
                 'attributes' => [
-                    'type' => Type::listOf($AttributeType),
+                    'type' => Type::listOf($attributeType),
                     'resolve' => fn($product) => AttributesResolver::fetchattributes($pdo, $product)
                 ],
                 'price' => [
@@ -79,7 +82,49 @@ class GraphQLSchema
             ]
         ]);
 
-        // Query Type
+        $orderItemType = new ObjectType([
+            'name' => 'Order_item',
+            'fields' => [
+                'product_id' => Type::string(),
+                'quantity' => Type::int(),
+                'price' => Type::float(),
+                'attributes' => Type::string()
+
+            ]
+        ]);
+
+        $orderType = new ObjectType([
+            'name' => 'Order',
+            'fields' => [
+                'id' => Type::int(),
+                'total_price' => Type::float(),
+                'status' => Type::string(),
+                'created_at' => Type::string(),
+                'updated_at' => Type::string(),
+                'order_items' => [
+                    'type' => Type::listOf($orderItemType),
+                    'resolve' => fn($root) => $root['order_items'],
+                ],
+            ],
+        ]);
+
+        $selectedAttributeInput = new InputObjectType([
+            'name' => 'SelectedAttributeInput',
+            'fields' => [
+                'attribute_name' => Type::nonNull(Type::string()),
+                'value' => Type::nonNull(Type::string()),
+            ]
+        ]);
+
+        $orderItemInput = new InputObjectType([
+            'name' => 'OrderItemInput',
+            'fields' => [
+                'product_id' => Type::nonNull(Type::string()),
+                'quantity' => Type::nonNull(Type::int()),
+                'selected_attributes' => Type::listOf(Type::nonNull($selectedAttributeInput)),
+            ]
+        ]);
+
         $queryType = new ObjectType([
             'name' => 'Query',
             'fields' => [
@@ -108,26 +153,26 @@ class GraphQLSchema
             ]
         ]);
 
-        // Mutation Type
+
         $mutationType = new ObjectType([
             'name' => 'Mutation',
             'fields' => [
-                'addProduct' => [
-                    'type' => $productType,
+                'placeOrder' => [
+                    'type' => $orderType,
                     'args' => [
-                        'name' => ['type' => Type::nonNull(Type::string())],
-                        'category' => ['type' => Type::string()],
-                        'brand' => ['type' => Type::string()],
-                        'price' => ['type' => Type::float()],
-                        'description' => ['type' => Type::string()],
-                        'inStock' => ['type' => Type::boolean()],
+                        'order_items' => [
+                            'type' => Type::nonNull(Type::listOf(Type::nonNull($orderItemInput)))
+                        ],
+                        'status' => [
+                            'type' => Type::string(),
+                            'defaultValue' => 'pending',
+                        ],
                     ],
-                    'resolve' => function ($root, $args) {
-                        return ProductResolver::addProduct($args);
-                    }
+                    'resolve' => fn($root, $args) => OrderResolver::placeOrder($pdo, $args)
                 ],
-            ]
+            ],
         ]);
+
 
         return new Schema(
             (new SchemaConfig())
