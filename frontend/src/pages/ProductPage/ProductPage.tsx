@@ -21,7 +21,7 @@ const ProductPage = ({ openCart }: { openCart: () => void }) => {
 
   return (
     <div className="product-details-container">
-      <ImageGallery images={product.images} />
+      <ImageGallery images={product.images} data-testid="product-gallery"/>
       <ProductInfo product={product} dispatch={dispatch} openCart={openCart} />
     </div>
   );

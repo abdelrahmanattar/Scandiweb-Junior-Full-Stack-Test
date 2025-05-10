@@ -75,7 +75,10 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
     openCart();
   };
 
-  const isDisabled = !product.in_stock;
+  const isDisabled =
+    !product.in_stock ||
+    (product.attributes &&
+      Object.keys(selectedAttributes).length !== product.attributes.length);
 
   return (
     <div className="product-info">
@@ -83,7 +86,13 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
 
       {product.attributes &&
         product.attributes.map((attr: any) => (
-          <div key={attr.attribute_name} className="attribute-section">
+          <div
+            key={attr.attribute_name}
+            className="attribute-section"
+            data-testid={`product-attribute-${attr.attribute_name
+              .toLowerCase()
+              .replace(/\s+/g, "-")}`}
+          >
             <p className="label">{attr.attribute_name.toUpperCase()}:</p>
             <div className="attribute-options">
               {attr.attribute_item.map((item: any, idx: number) => {
@@ -125,7 +134,7 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
         <p className="label">PRICE:</p>
         <p className="product-price">
           {product.price.currency_symbol}
-          {product.price.amount}
+          {product.price.amount.toFixed(2)}
         </p>
       </div>
 
@@ -133,11 +142,14 @@ const ProductInfo: React.FC<ProductInfoProps> = ({
         className={`add-to-cart-button ${isDisabled ? "disabled" : ""}`}
         onClick={handleAddToCart}
         disabled={isDisabled}
+        data-testid="add-to-cart"
       >
         ADD TO CART
       </button>
 
-      <p className="product-description">{parse(product.description)}</p>
+      <p className="product-description" data-testid="product-description">
+        {parse(product.description)}
+      </p>
     </div>
   );
 };

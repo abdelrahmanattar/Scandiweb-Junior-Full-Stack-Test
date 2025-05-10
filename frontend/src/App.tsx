@@ -2,8 +2,7 @@ import Navbar from "./components/NavBar/Navbar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { useState } from "react";
 import ProductPage from "./pages/ProductPage/ProductPage";
-import { GET_PRODUCTS_BY_CATEGORY } from "@/graphql/queries";
-import CategoryPage from "@/pages/CategoryPage/CategoryPage"; // Ensure this handles variables correctly
+import CategoryPage from "@/pages/CategoryPage/CategoryPage";
 import SideCart from "./components/SideCart/SideCart";
 import "./app.css";
 
@@ -21,7 +20,10 @@ function App() {
     <div className="wrapper">
       <Router>
         <Navbar toggleSideCart={toggleSideCart} />
-        <SideCart isOpen={isSideCartOpen} />
+        <SideCart
+          isOpen={isSideCartOpen}
+          onClose={() => setIsSideCartOpen(false)}
+        />
         {isSideCartOpen && (
           <div className="overlay" onClick={toggleSideCart}></div>
         )}

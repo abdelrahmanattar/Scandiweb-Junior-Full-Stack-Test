@@ -1,6 +1,5 @@
 import { gql } from "@apollo/client";
 
-// Define your query to fetch products from the GraphQL API
 export const GET_PRODUCTS = gql`
   query GetProducts {
     products {
@@ -77,3 +76,13 @@ export const GET_PRODUCTS_BY_ID = gql`
   }
 `;
 
+export const PLACE_ORDER = gql`
+  mutation placeOrder($order_items: [OrderItemInput!]!, $status: String) {
+    placeOrder(order_items: $order_items, status: $status) {
+      id
+      status
+      total_price
+      created_at
+    }
+  }
+`;
