@@ -70,12 +70,10 @@ export const cartSlice = createSlice({
 
     clearCart(state) {
       state.items = [];
-    }
+    },
   },
 });
 
-export const selectCartCount = (state: any) =>
-  state.cart.items.reduce((total: any, item: any) => total + item.quantity, 0);
 
-export const { addItem, incrementItem, decrementItem, clearCart } = cartSlice.actions;
+export const { addItem, incrementItem, decrementItem, clearCart} = cartSlice.actions;
 export default cartSlice.reducer;

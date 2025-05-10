@@ -3,7 +3,7 @@ import "./SideCart.css";
 import { useAppSelector } from "@/hooks/useAppSelector";
 import { useAppDispatch } from "@/hooks/useAppDispatch";
 import CartItem from "../CartItem/CartItem";
-import { selectCartCount, clearCart } from "@/store/slices/cartSlice";
+import { clearCart } from "@/store/slices/cartSlice";
 import { PLACE_ORDER } from "@/graphql/queries";
 import { useMutation } from "@apollo/client";
 import { useNavigate } from "react-router-dom";
@@ -15,7 +15,7 @@ interface SideCartProps {
 
 const SideCart: React.FC<SideCartProps> = ({ isOpen, onClose }) => {
   const cartItems = useAppSelector((state) => state.cart.items);
-  const cartCount = useAppSelector(selectCartCount);
+  const cartCount = cartItems.reduce((total, item) => total + item.quantity, 0);
   const dispatch = useAppDispatch();
   const total = cartItems.reduce(
     (sum, item) => sum + item.price * item.quantity,
@@ -49,7 +49,6 @@ const SideCart: React.FC<SideCartProps> = ({ isOpen, onClose }) => {
       dispatch(clearCart());
       onClose();
       navigate("/");
-      
     } catch (err) {
       alert("Failed to place order.");
     }
