@@ -5,12 +5,8 @@ import "./CartBubble.css";
 
 const CartBubble: React.FC = () => {
   const cartCount = useSelector(selectCartCount);
-  console.log("CartBubble Rendered, Cart Count: ", cartCount); // Check if it renders correctly
-  return (
-    <div className= "cart-icon">
-      {cartCount > 0 && <div className="cart-bubble">{cartCount}</div>}
-    </div>
-  );
+  // console.log(cartCount);
+  return cartCount > 0 && <div className="cart-bubble">{cartCount}</div>;
 };
 
 export default CartBubble;

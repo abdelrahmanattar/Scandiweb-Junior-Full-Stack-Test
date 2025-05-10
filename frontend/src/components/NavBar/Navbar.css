@@ -52,3 +52,7 @@
     display: flex;
     position: relative;
 }
+
+.cart-wrapper img{
+    scale: 1;
+}

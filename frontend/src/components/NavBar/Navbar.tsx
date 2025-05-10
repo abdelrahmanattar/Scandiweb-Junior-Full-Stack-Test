@@ -46,7 +46,7 @@ const Navbar: React.FC<NavbarProps> = ({ toggleSideCart }) => {
           src="icon-navbarcart.svg"
           alt="Cart Icon"
           onClick={toggleSideCart}
-          style={{ cursor: "pointer" }}
+          style={{ cursor: "pointer"}}
         />
       </div>
     </div>

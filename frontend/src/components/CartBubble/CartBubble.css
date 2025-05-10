@@ -1,15 +1,17 @@
-.cart-icon {
-    display: block;
-    position: relative;
-}
-
 .cart-bubble {
-    background-color: red;
+    background-color: grey;
     position: absolute;
+    padding: 0.5px;
     top: -5px;
-    right: -5px;
+    right: -15px;
     border-radius: 50%;
     color: white;
-    font-size: 14px;
-    padding: 5px;
+    font-size: 12px;
+    min-width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    z-index: 100;
 }
